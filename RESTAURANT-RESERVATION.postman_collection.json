@@ -1,0 +1,373 @@
+{
+	"info": {
+		"_postman_id": "d10794f6-5bbf-421f-909a-ddc12a4e48a9",
+		"name": "RESTAURANT-RESERVATION",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "37765771"
+	},
+	"item": [
+		{
+			"name": "user-service",
+			"item": [
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\" : \"valentinaAndric\",\r\n    \"password\" : \"password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8083/api/auth/login"
+							},
+							"response": []
+						},
+						{
+							"name": "register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\" : \"valentinaAndric\",\r\n    \"password\" : \"password\",\r\n    \"role\" : \"USER\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8083/api/auth/register"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "getAllUsers",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2MTc1MzE5NCwiZXhwIjoxNzYxNzU2Nzk0fQ.Jp1F4hhEmhKp1qvMhp2f-HUF5TIMl8CnpqymXaSqM4o"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8083/api/users"
+					},
+					"response": []
+				},
+				{
+					"name": "getUserById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2MTc1MzMzNywiZXhwIjoxNzYxNzU2OTM3fQ.8hVHnFlih51CUp416V1eCPGL0Bqa8KuRnCQ7dB-_hpk"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8083/api/users/1"
+					},
+					"response": []
+				},
+				{
+					"name": "createUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2MTc1MzMzNywiZXhwIjoxNzYxNzU2OTM3fQ.8hVHnFlih51CUp416V1eCPGL0Bqa8KuRnCQ7dB-_hpk"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\" : \"user1\",\r\n    \"password\" : \"password\",\r\n    \"role\" : \"USER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8083/api/users"
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2MTc1MzMzNywiZXhwIjoxNzYxNzU2OTM3fQ.8hVHnFlih51CUp416V1eCPGL0Bqa8KuRnCQ7dB-_hpk"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\" : \"user2\",\r\n    \"password\" : \"password\",\r\n    \"role\" : \"USER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8083/api/users/4"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUser",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8083/api/users/4"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "restaurant-service",
+			"item": [
+				{
+					"name": "createRestaurant",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Soha\",\r\n    \"address\" : \"Sentandrejski put 119\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8087/api/restaurants"
+					},
+					"response": []
+				},
+				{
+					"name": "getRestaurantById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2MzIxNzkxMiwiZXhwIjoxNzYzMjIxNTEyfQ.MFJL0dHIoP0bSEgZgRAUcschPxq_82QEUThpqV3ENXM"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8087/api/restaurants/2"
+					},
+					"response": []
+				},
+				{
+					"name": "getAllRestaurants",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2MzIxNTI5NiwiZXhwIjoxNzYzMjE4ODk2fQ.tkAQYzURLZ25mu1uI2JOSVD3LpIO-j2Jtow9vuBkvUk"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8087/api/restaurants"
+					},
+					"response": []
+				},
+				{
+					"name": "getTablesByRestaurant",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8087/api/tables/restaurant/1"
+					},
+					"response": []
+				},
+				{
+					"name": "putRestaurant",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2MzQ4MzA2NSwiZXhwIjoxNzYzNDg2NjY1fQ.BnJp3tyA_1BlqnlfrW47wceW3tN9xxsp20IisgWHy9A"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Soha bar\",\r\n    \"address\" : \"Sentandrejski put 119\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8087/api/restaurants/1"
+					},
+					"response": []
+				},
+				{
+					"name": "createTable",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"number\": 2,\r\n    \"seats\" : 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8087/api/tables/restaurant/2"
+					},
+					"response": []
+				},
+				{
+					"name": "updateTable",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"number\": 2,\r\n    \"seats\" : 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8087/api/tables/1"
+					},
+					"response": []
+				},
+				{
+					"name": "getAllTables",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8087/api/tables"
+					},
+					"response": []
+				},
+				{
+					"name": "getTableById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2MzIxNTI5NiwiZXhwIjoxNzYzMjE4ODk2fQ.tkAQYzURLZ25mu1uI2JOSVD3LpIO-j2Jtow9vuBkvUk"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8087/api/tables/3"
+					},
+					"response": []
+				},
+				{
+					"name": "getTableForRestaurant",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8087/api/tables/1"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteRestaurant",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8087/api/restaurants/1"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteTable",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8087/api/tables/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "table-managment-service",
+			"item": [
+				{
+					"name": "createStatusOfTableReservation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8084/api/table-status/2/2"
+					},
+					"response": []
+				},
+				{
+					"name": "reserve",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8084/api/table-status/reserve/2/2"
+					},
+					"response": []
+				},
+				{
+					"name": "free",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8084/api/table-status/free/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "reservation-service",
+			"item": [
+				{
+					"name": "createReservation",
+					"request": {
+						"method": "POST",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
