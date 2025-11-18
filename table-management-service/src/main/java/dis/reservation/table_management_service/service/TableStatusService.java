@@ -1,6 +1,6 @@
 package dis.reservation.table_management_service.service;
 
-import dis.reservation.table_management_service.client.RestaurantClient;
+import dis.reservation.table_management_service.client.RestaurantServiceClient;
 import dis.reservation.table_management_service.dto.RestaurantTableDto;
 import dis.reservation.table_management_service.entity.TableStatus;
 import dis.reservation.table_management_service.entity.TableStatusEntity;
@@ -18,11 +18,11 @@ import org.springframework.stereotype.Service;
 public class TableStatusService {
 
     private final TableStatusRepository tableStatusRepository;
-    private final RestaurantClient restaurantClient;
+    private final RestaurantServiceClient restaurantServiceClient;
 
     public TableStatusEntity createStatus(Long restaurantId, Long tableId) {
 
-        RestaurantTableDto tableDTO = restaurantClient.getTableById(restaurantId, tableId);
+        RestaurantTableDto tableDTO = restaurantServiceClient.getTableById(restaurantId, tableId);
 
         TableStatusEntity status = TableStatusEntity.builder()
                 .restaurantId(tableDTO.restaurantId())
@@ -36,7 +36,7 @@ public class TableStatusService {
 
     public TableStatusEntity reserve(Long restaurantId, Long tableId, int minutes) {
 
-        RestaurantTableDto tableDTO = restaurantClient.getTableById(restaurantId, tableId);
+        RestaurantTableDto tableDTO = restaurantServiceClient.getTableById(restaurantId, tableId);
 
         Optional<TableStatusEntity> existing = tableStatusRepository
                 .findByTableId(tableDTO.id())
@@ -71,7 +71,7 @@ public class TableStatusService {
 
     public List<RestaurantTableDto> getAvailableTables(Long restaurantId, int partySize) {
 
-        List<RestaurantTableDto> allTables = restaurantClient.getTablesByRestaurant(restaurantId);
+        List<RestaurantTableDto> allTables = restaurantServiceClient.getTablesByRestaurant(restaurantId);
 
         List<Long> suitableTableIds = allTables.stream()
                 .filter(t -> t.seats() >= partySize)

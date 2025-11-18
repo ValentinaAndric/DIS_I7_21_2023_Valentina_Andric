@@ -74,20 +74,9 @@ public class TableController {
             @PathVariable Long restaurantId,
             @PathVariable Long tableId) {
 
-        TableEntity table = tableService.getTableById(tableId);
+        RestaurantTableDto restaurantTableDto = tableService.getTableForRestaurant(restaurantId, tableId);
 
-        if (!table.getRestaurant().getId().equals(restaurantId)) {
-            throw new RuntimeException("Table does not belong to restaurant");
-        }
-
-        RestaurantTableDto dto = new RestaurantTableDto(
-                table.getId(),
-                table.getNumber(),
-                table.getSeats(),
-                table.getRestaurant().getId()
-        );
-
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok(restaurantTableDto);
     }
 }
 

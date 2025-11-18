@@ -8,7 +8,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import dis.reservation.table_management_service.client.RestaurantClient;
+import dis.reservation.table_management_service.client.RestaurantServiceClient;
 import dis.reservation.table_management_service.dto.RestaurantTableDto;
 import dis.reservation.table_management_service.entity.TableStatus;
 import dis.reservation.table_management_service.entity.TableStatusEntity;
@@ -23,19 +23,19 @@ import org.junit.jupiter.api.Test;
 class TableStatusServiceTest {
 
     private TableStatusRepository tableStatusRepository;
-    private RestaurantClient restaurantClient;
+    private RestaurantServiceClient restaurantServiceClient;
     private TableStatusService tableStatusService;
 
     @BeforeEach
     void setup() {
 
         tableStatusRepository = mock(TableStatusRepository.class);
-        restaurantClient = mock(RestaurantClient.class);
-        tableStatusService = new TableStatusService(tableStatusRepository, restaurantClient);
+        restaurantServiceClient = mock(RestaurantServiceClient.class);
+        tableStatusService = new TableStatusService(tableStatusRepository, restaurantServiceClient);
     }
 
     @Test
-    void createStatus_savesNewStatus() {
+    void testCreateStatus_savesNewStatus() {
 
         RestaurantTableDto dto = RestaurantTableDto.builder()
                 .id(1L)
@@ -43,7 +43,7 @@ class TableStatusServiceTest {
                 .seats(4)
                 .build();
 
-        when(restaurantClient.getTableById(1L, 2L)).thenReturn(dto);
+        when(restaurantServiceClient.getTableById(1L, 2L)).thenReturn(dto);
 
         TableStatusEntity savedEntity = TableStatusEntity.builder()
                 .restaurantId(1L)
@@ -60,7 +60,7 @@ class TableStatusServiceTest {
     }
 
     @Test
-    void free_table_setsAvailable() {
+    void testFreeTable_setsSetStatusAvailable() {
 
         TableStatusEntity status = TableStatusEntity.builder()
                 .tableId(2L)
@@ -78,7 +78,7 @@ class TableStatusServiceTest {
     }
 
     @Test
-    void free_table_notFound_throws() {
+    void testFreeTable_throwsException_whenTableNotFound() {
 
         when(tableStatusRepository.findByTableId(99L)).thenReturn(List.of());
 

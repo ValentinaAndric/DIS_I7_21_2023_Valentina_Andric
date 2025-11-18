@@ -1,5 +1,10 @@
 package dis.reservation.user.service;
 
+import static dis.reservation.user.service.UserServiceDataFixture.INVALID_PASSWORD;
+import static dis.reservation.user.service.UserServiceDataFixture.TEST_PASSWORD;
+import static dis.reservation.user.service.UserServiceDataFixture.TEST_USERNAME;
+import static dis.reservation.user.service.UserServiceDataFixture.UNKNOWN_PASSWORD;
+import static dis.reservation.user.service.UserServiceDataFixture.UNKNOWN_USERNAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
@@ -33,12 +38,12 @@ class AuthServiceTest {
     );
 
     @Test
-    void register_success() {
+    void testRegister_success() {
 
-        RegisterRequestDto req = new RegisterRequestDto("testuser", "pass", Role.ADMIN);
+        RegisterRequestDto req = new RegisterRequestDto(TEST_USERNAME, TEST_PASSWORD, Role.ADMIN);
 
-        when(userRepository.findByUsername("testuser")).thenReturn(Optional.empty());
-        when(passwordEncoder.encode("pass")).thenReturn("encoded-pass");
+        when(userRepository.findByUsername(TEST_USERNAME)).thenReturn(Optional.empty());
+        when(passwordEncoder.encode(TEST_PASSWORD)).thenReturn("encoded-pass");
 
         authService.register(req);
 
@@ -47,17 +52,17 @@ class AuthServiceTest {
 
         User saved = captor.getValue();
 
-        assertEquals("testuser", saved.getUsername());
+        assertEquals(TEST_USERNAME, saved.getUsername());
         assertEquals("encoded-pass", saved.getPassword());
         assertEquals(Role.ADMIN, saved.getRole());
     }
 
     @Test
-    void register_usernameAlreadyExists_throwsException() {
+    void testRegister_usernameAlreadyExists_throwsException() {
 
-        RegisterRequestDto req = new RegisterRequestDto("user", "pass", Role.ADMIN);
+        RegisterRequestDto req = new RegisterRequestDto(TEST_USERNAME, TEST_PASSWORD, Role.ADMIN);
 
-        when(userRepository.findByUsername("user"))
+        when(userRepository.findByUsername(TEST_USERNAME))
                 .thenReturn(Optional.of(new User()));
 
         assertThrows(UserServiceGeneralException.class, () -> authService.register(req));
@@ -66,19 +71,19 @@ class AuthServiceTest {
     }
 
     @Test
-    void login_success() {
+    void testLogin_success() {
 
-        LoginRequestDto req = new LoginRequestDto("user", "pass");
+        LoginRequestDto req = new LoginRequestDto(TEST_USERNAME, TEST_PASSWORD);
 
         User u = User.builder()
-                .username("user")
+                .username(TEST_USERNAME)
                 .password("encoded")
                 .role(Role.ADMIN)
                 .build();
 
-        when(userRepository.findByUsername("user")).thenReturn(Optional.of(u));
-        when(passwordEncoder.matches("pass", "encoded")).thenReturn(true);
-        when(jwtUtil.generateToken("user", Role.ADMIN)).thenReturn("jwt-token");
+        when(userRepository.findByUsername(TEST_USERNAME)).thenReturn(Optional.of(u));
+        when(passwordEncoder.matches(TEST_PASSWORD, "encoded")).thenReturn(true);
+        when(jwtUtil.generateToken(TEST_USERNAME, Role.ADMIN)).thenReturn("jwt-token");
 
         AuthResponseDto response = authService.login(req);
 
@@ -86,28 +91,28 @@ class AuthServiceTest {
     }
 
     @Test
-    void login_invalidUsername_throwsException() {
+    void testLogin_invalidUsername_throwsException() {
 
-        when(userRepository.findByUsername("unknown")).thenReturn(Optional.empty());
+        when(userRepository.findByUsername(UNKNOWN_USERNAME)).thenReturn(Optional.empty());
 
-        LoginRequestDto req = new LoginRequestDto("unknown", "pass");
+        LoginRequestDto req = new LoginRequestDto(UNKNOWN_USERNAME, UNKNOWN_PASSWORD);
 
         assertThrows(UserServiceGeneralException.class, () -> authService.login(req));
     }
 
     @Test
-    void login_wrongPassword_throwsException() {
+    void testLogin_wrongPassword_throwsException() {
 
-        LoginRequestDto req = new LoginRequestDto("user", "wrong");
+        LoginRequestDto req = new LoginRequestDto(TEST_USERNAME, INVALID_PASSWORD);
 
         User u = User.builder()
-                .username("user")
+                .username(TEST_USERNAME)
                 .password("encoded")
                 .role(Role.ADMIN)
                 .build();
 
-        when(userRepository.findByUsername("user")).thenReturn(Optional.of(u));
-        when(passwordEncoder.matches("wrong", "encoded")).thenReturn(false);
+        when(userRepository.findByUsername(TEST_USERNAME)).thenReturn(Optional.of(u));
+        when(passwordEncoder.matches(INVALID_PASSWORD, "encoded")).thenReturn(false);
 
         assertThrows(UserServiceGeneralException.class, () -> authService.login(req));
     }

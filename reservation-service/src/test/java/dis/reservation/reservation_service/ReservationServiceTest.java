@@ -10,9 +10,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import dis.reservation.reservation_service.client.TableClient;
+import dis.reservation.reservation_service.client.TableServiceClient;
 import dis.reservation.reservation_service.dto.CreateReservationRequestDto;
-import dis.reservation.reservation_service.dto.ReserveRequestDto;
 import dis.reservation.reservation_service.dto.TableDto;
 import dis.reservation.reservation_service.entity.ReservationEntity;
 import dis.reservation.reservation_service.entity.ReservationStatus;
@@ -27,7 +26,7 @@ import org.junit.jupiter.api.Test;
 
 class ReservationServiceTest {
 
-    private TableClient tableClient;
+    private TableServiceClient tableServiceClient;
     private ReservationRepository reservationRepository;
     private ReservationPublisher publisher;
     private ReservationService reservationService;
@@ -35,15 +34,15 @@ class ReservationServiceTest {
     @BeforeEach
     void setUp() {
 
-        tableClient = mock(TableClient.class);
+        tableServiceClient = mock(TableServiceClient.class);
         reservationRepository = mock(ReservationRepository.class);
         publisher = mock(ReservationPublisher.class);
 
-        reservationService = new ReservationService(tableClient, reservationRepository, publisher);
+        reservationService = new ReservationService(tableServiceClient, reservationRepository, publisher);
     }
 
     @Test
-    void createReservation_success() {
+    void testCreateReservation_returnsCreatedReservation() {
 
         CreateReservationRequestDto request = CreateReservationRequestDto.builder()
                 .restaurantId(1L)
@@ -54,7 +53,7 @@ class ReservationServiceTest {
                 .build();
 
         TableDto table = new TableDto(100L, 1L, 4);
-        when(tableClient.findAvailable(1L, 2)).thenReturn(List.of(table));
+        when(tableServiceClient.getAvailableTables(1L, 2)).thenReturn(List.of(table));
         when(reservationRepository.save(any(ReservationEntity.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -67,12 +66,12 @@ class ReservationServiceTest {
         assertThat(reservation.getStatus()).isEqualTo(ReservationStatus.CREATED);
         assertThat(reservation.getEndAt()).isEqualTo(request.startAt().plusMinutes(request.durationMinutes()));
 
-        verify(tableClient).reserve(eq(1L), eq(100L), any(ReserveRequestDto.class));
+        verify(tableServiceClient).reserveTable(eq(1L), eq(100L), 20);
         verify(publisher).publishReservationCreated(any(ReservationEntity.class));
     }
 
     @Test
-    void createReservation_noAvailableTables_throwsException() {
+    void testCreateReservation_throwsException_whenNoAvailableTables() {
 
         CreateReservationRequestDto request = CreateReservationRequestDto.builder()
                 .restaurantId(1L)
@@ -82,12 +81,12 @@ class ReservationServiceTest {
                 .durationMinutes(60)
                 .build();
 
-        when(tableClient.findAvailable(1L, 2)).thenReturn(List.of());
+        when(tableServiceClient.getAvailableTables(1L, 2)).thenReturn(List.of());
 
         assertThrows(ReservationServiceGeneralException.class,
                      () -> reservationService.createReservation(request));
 
-        verify(tableClient, never()).reserve(anyLong(), anyLong(), any());
+        verify(tableServiceClient, never()).reserveTable(anyLong(), anyLong(), any());
         verify(publisher, never()).publishReservationCreated(any());
     }
 }

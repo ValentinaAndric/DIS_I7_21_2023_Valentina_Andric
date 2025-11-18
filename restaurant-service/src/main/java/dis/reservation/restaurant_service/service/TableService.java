@@ -1,5 +1,6 @@
 package dis.reservation.restaurant_service.service;
 
+import dis.reservation.restaurant_service.dto.RestaurantTableDto;
 import dis.reservation.restaurant_service.entity.RestaurantEntity;
 import dis.reservation.restaurant_service.entity.TableEntity;
 import dis.reservation.restaurant_service.exception.ErrorCode;
@@ -64,6 +65,23 @@ public class TableService {
         }
 
         return tableRepository.save(existing);
+    }
+
+    public RestaurantTableDto getTableForRestaurant(Long restaurantId, Long tableId) {
+
+        TableEntity table = getTableById(tableId);
+
+        if (!table.getRestaurant().getId().equals(restaurantId)) {
+            throw new RestaurantServiceGeneralException("Table does not belong to restaurant",
+                                                        ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+
+        return new RestaurantTableDto(
+                table.getId(),
+                table.getNumber(),
+                table.getSeats(),
+                table.getRestaurant().getId()
+        );
     }
 
     public void deleteTable(Long id) {

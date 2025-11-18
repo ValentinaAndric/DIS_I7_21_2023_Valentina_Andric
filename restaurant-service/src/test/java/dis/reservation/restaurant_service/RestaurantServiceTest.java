@@ -1,5 +1,6 @@
 package dis.reservation.restaurant_service;
 
+import static dis.reservation.restaurant_service.RestaurantServiceDataFixture.TEST_RESTAURANT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -28,23 +29,23 @@ class RestaurantServiceTest {
     }
 
     @Test
-    void testGetRestaurantById_Found() {
+    void testShouldReturnRestaurant_whenNewRestaurantExists() {
 
         RestaurantEntity restaurant = new RestaurantEntity();
         restaurant.setId(1L);
-        restaurant.setName("Test Restaurant");
+        restaurant.setName(TEST_RESTAURANT);
 
         when(restaurantRepository.findById(1L)).thenReturn(Optional.of(restaurant));
 
         RestaurantEntity result = restaurantService.getRestaurantById(1L);
 
         assertEquals(1L, result.getId());
-        assertEquals("Test Restaurant", result.getName());
+        assertEquals(TEST_RESTAURANT, result.getName());
         verify(restaurantRepository, times(1)).findById(1L);
     }
 
     @Test
-    void testGetRestaurantById_NotFound() {
+    void testShouldThrowException_whenNewRestaurantNotExists() {
 
         when(restaurantRepository.findById(1L)).thenReturn(Optional.empty());
 
@@ -53,21 +54,21 @@ class RestaurantServiceTest {
     }
 
     @Test
-    void testCreateRestaurant() {
+    void testShouldCreateNewRestaurant() {
 
         RestaurantEntity restaurant = new RestaurantEntity();
-        restaurant.setName("Pizza Place");
+        restaurant.setName(TEST_RESTAURANT);
 
         when(restaurantRepository.save(restaurant)).thenReturn(restaurant);
 
         RestaurantEntity saved = restaurantService.createRestaurant(restaurant);
 
-        assertEquals("Pizza Place", saved.getName());
+        assertEquals(TEST_RESTAURANT, saved.getName());
         verify(restaurantRepository).save(restaurant);
     }
 
     @Test
-    void testDeleteRestaurant() {
+    void testShouldDeleteRestaurant() {
 
         RestaurantEntity restaurant = new RestaurantEntity();
         restaurant.setId(5L);
@@ -80,7 +81,7 @@ class RestaurantServiceTest {
     }
 
     @Test
-    void testDeleteRestaurant_NotFound() {
+    void testShouldThrowException_whenDeleteRestaurantNotExists() {
 
         when(restaurantRepository.findById(10L)).thenReturn(Optional.empty());
 

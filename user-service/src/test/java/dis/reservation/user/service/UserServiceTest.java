@@ -1,5 +1,7 @@
 package dis.reservation.user.service;
 
+import static dis.reservation.user.service.UserServiceDataFixture.TEST_USERNAME;
+import static dis.reservation.user.service.UserServiceDataFixture.TEST_USERNAME_SECOND;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -21,11 +23,11 @@ class UserServiceTest {
     private final UserService userService = new UserService(userRepository);
 
     @Test
-    void getAllUsers_returnsList() {
+    void testGetAllUsers_shouldReturnsList() {
 
         List<User> users = Arrays.asList(
-                User.builder().username("a").build(),
-                User.builder().username("b").build()
+                User.builder().username(TEST_USERNAME).build(),
+                User.builder().username(TEST_USERNAME_SECOND).build()
         );
 
         when(userRepository.findAll()).thenReturn(users);
@@ -37,23 +39,23 @@ class UserServiceTest {
     }
 
     @Test
-    void getUserById_found() {
+    void testGetUserById_found() {
 
         User u = User.builder()
                 .id(1L)
-                .username("test")
+                .username(TEST_USERNAME)
                 .build();
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(u));
 
         User result = userService.getUserById(1L);
 
-        assertEquals("test", result.getUsername());
+        assertEquals(TEST_USERNAME, result.getUsername());
         verify(userRepository).findById(1L);
     }
 
     @Test
-    void getUserById_notFound_throwsException() {
+    void testGetUserById_notFound_throwsException() {
 
         when(userRepository.findById(10L)).thenReturn(Optional.empty());
 
@@ -61,20 +63,20 @@ class UserServiceTest {
     }
 
     @Test
-    void saveUser_success() {
+    void testSaveUser_success() {
 
-        User u = User.builder().username("test").build();
+        User u = User.builder().username(TEST_USERNAME).build();
 
         when(userRepository.save(u)).thenReturn(u);
 
         User saved = userService.saveUser(u);
 
-        assertEquals("test", saved.getUsername());
+        assertEquals(TEST_USERNAME, saved.getUsername());
         verify(userRepository).save(u);
     }
 
     @Test
-    void deleteUser_success() {
+    void testDeleteUser_success() {
 
         userService.deleteUser(5L);
 

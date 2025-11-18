@@ -14,11 +14,6 @@ public enum ErrorCode {
 
     private final Severity severity;
 
-    public String getSeverityName() {
-
-        return severity.name();
-    }
-
     private enum Severity {
         ERROR, WARN, INFO
     }
