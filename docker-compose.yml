@@ -1,0 +1,184 @@
+version: "3.9"
+
+services:
+  # ------------------------
+  # Eureka server
+  # ------------------------
+  eureka-server:
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:h2:mem:eureka;DB_CLOSE_DELAY=-1
+    networks:
+      - reservation-net
+
+  # ------------------------
+  # User Service
+  # ------------------------
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    container_name: user-service
+    depends_on:
+      - eureka-server
+      - postgres-user
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-user:5432/user_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: DuoG7Yq3iqtSIGiEXZLsX3rkjJNtezSYLJQOQmlRtFJ4SnDJx1tRiUMNZ6szcoaZ
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      JWT_SECRET_KEY: mySuperSecretKey1234567890123456
+    networks:
+      - reservation-net
+
+  # ------------------------
+  # Restaurant Service
+  # ------------------------
+  restaurant-service:
+    build:
+      context: ./restaurant-service
+      dockerfile: Dockerfile
+    container_name: restaurant-service
+    depends_on:
+      - eureka-server
+      - postgres-restaurant
+    ports:
+      - "8087:8087"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-restaurant:5432/restaurant_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: DuoG7Yq3iqtSIGiEXZLsX3rkjJNtezSYLJQOQmlRtFJ4SnDJx1tRiUMNZ6szcoaZ
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      JWT_SECRET_KEY: mySuperSecretKey1234567890123456
+    networks:
+      - reservation-net
+
+  # ------------------------
+  # Table Management Service
+  # ------------------------
+  table-management-service:
+    build:
+      context: ./table-management-service
+      dockerfile: Dockerfile
+    container_name: table-management-service
+    depends_on:
+      - eureka-server
+      - postgres-table
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-table:5432/table_management_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: DuoG7Yq3iqtSIGiEXZLsX3rkjJNtezSYLJQOQmlRtFJ4SnDJx1tRiUMNZ6szcoaZ
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      JWT_SECRET_KEY: mySuperSecretKey1234567890123456
+    networks:
+      - reservation-net
+
+  # ------------------------
+  # Reservation Service
+  # ------------------------
+  reservation-service:
+    build:
+      context: ./reservation-service
+      dockerfile: Dockerfile
+    container_name: reservation-service
+    depends_on:
+      - eureka-server
+      - table-management-service
+      - postgres-table
+      - rabbitmq
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-table:5432/table_management_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: DuoG7Yq3iqtSIGiEXZLsX3rkjJNtezSYLJQOQmlRtFJ4SnDJx1tRiUMNZ6szcoaZ
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      JWT_SECRET_KEY: mySuperSecretKey1234567890123456
+    networks:
+      - reservation-net
+
+  # ------------------------
+  # Notification Service
+  # ------------------------
+  notification-service:
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
+    container_name: notification-service
+    depends_on:
+      - rabbitmq
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    networks:
+      - reservation-net
+
+  # ------------------------
+  # PostgreSQL Databases
+  # ------------------------
+  postgres-user:
+    image: postgres:15
+    container_name: postgres-user
+    environment:
+      POSTGRES_DB: user_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: DuoG7Yq3iqtSIGiEXZLsX3rkjJNtezSYLJQOQmlRtFJ4SnDJx1tRiUMNZ6szcoaZ
+    ports:
+      - "5433:5432"
+    networks:
+      - reservation-net
+
+  postgres-restaurant:
+    image: postgres:15
+    container_name: postgres-restaurant
+    environment:
+      POSTGRES_DB: restaurant_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: DuoG7Yq3iqtSIGiEXZLsX3rkjJNtezSYLJQOQmlRtFJ4SnDJx1tRiUMNZ6szcoaZ
+    ports:
+      - "5437:5432"
+    networks:
+      - reservation-net
+
+  postgres-table:
+    image: postgres:15
+    container_name: postgres-table
+    environment:
+      POSTGRES_DB: table_management_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: DuoG7Yq3iqtSIGiEXZLsX3rkjJNtezSYLJQOQmlRtFJ4SnDJx1tRiUMNZ6szcoaZ
+    ports:
+      - "5434:5432"
+    networks:
+      - reservation-net
+
+  # ------------------------
+  # RabbitMQ
+  # ------------------------
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - reservation-net
+
+networks:
+  reservation-net:
+    driver: bridge

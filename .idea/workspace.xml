@@ -4,11 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3b0e49d3-56f3-4ddb-a8a0-6ea917e48cff" name="Changes" comment="" />
+    <list default="true" id="3b0e49d3-56f3-4ddb-a8a0-6ea917e48cff" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/eureka-server/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification-service/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/reservation-service/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/restaurant-service/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/table-management-service/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/resources/application-localhost.properties" beforeDir="false" afterPath="$PROJECT_DIR$/notification-service/src/main/resources/application-localhost.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/notification-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reservation-service/src/main/java/dis/reservation/reservation_service/controller/ReservationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/reservation-service/src/main/java/dis/reservation/reservation_service/controller/ReservationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/restaurant-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/restaurant-service/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
@@ -23,8 +38,9 @@
     "Application.EurekaServerApplication.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Spring Boot.EurekaServerApplication.executor": "Run",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/ValentinaAndric/Desktop/DIS_I7_21_2023_Valentina_Andric/user-service",
+    "last_opened_file_path": "C:/Users/ValentinaAndric/Desktop/DIS_I7_21_2023_Valentina_Andric/restaurant-service",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -61,6 +77,7 @@
       <updated>1761681615437</updated>
       <workItem from="1761681616456" duration="1202000" />
       <workItem from="1762170096543" duration="616000" />
+      <workItem from="1763480890301" duration="2348000" />
     </task>
     <servers />
   </component>
