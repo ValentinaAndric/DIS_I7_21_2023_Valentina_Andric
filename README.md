@@ -23,7 +23,6 @@ Sistem se sastoji iz sledećih servisa:
   - Login / JWT autentifikaciju
   - Upravljanje korisničkim podacima
 - Registruje se na Eureku.
-- Komunicira sa drugim servisima pomoću REST-a.
 
 ### **3. Restaurant Service**
 - Port: **8087**
@@ -62,7 +61,6 @@ Sistem se sastoji iz sledećih servisa:
 ## 🐇 RabbitMQ (Message Broker)
 - Portovi:
   - 5672 – komunikacija
-  - 15672 – web UI
 - Koristi se za:
   - Asinhrono slanje poruka o kreiranoj rezervaciji
   - Rasterska obrada događaja u Notification servisu
@@ -98,4 +96,6 @@ Docker Compose pokreće ukupno **9 kontejnera**:
 Svaki servis ima svoj Dockerfile.
 
 ### Komanda za pokretanje:
+docker-compose build
+docker compose up
 
