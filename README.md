@@ -97,6 +97,6 @@ Docker Compose pokreće ukupno **9 kontejnera**:
 Svaki servis ima svoj Dockerfile.
 
 ### Komanda za pokretanje:
-docker-compose build
-docker compose up
+-docker-compose build
+-docker compose up
 
