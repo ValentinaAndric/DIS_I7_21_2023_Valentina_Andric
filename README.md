@@ -8,7 +8,9 @@ Arhitektura omogućava skalabilnost, otpornost na greške i nezavisno razvijanje
 ## 📌 Arhitektura sistema
 
 Sistem se sastoji iz sledećih servisa:
-<img width="861" height="559" alt="a drawio" src="https://github.com/user-attachments/assets/e799fb46-354e-42f2-8995-cdaecd72081a" />
+---
+<img width="881" height="579" alt="aa drawio" src="https://github.com/user-attachments/assets/f062aa50-4fd6-480d-a870-f9fcd54a0732" />
+---
 
 ### **1. Eureka Server (Service Discovery)**
 - **Port:** 8761  
