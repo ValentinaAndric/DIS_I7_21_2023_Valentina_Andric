@@ -91,8 +91,24 @@ Docker Compose pokreće ukupno **9 kontejnera**:
 
 Svaki servis ima svoj Dockerfile.
 
+---
+
+## 🧪 Testiranje sistema
+
+Sistem je pokriven **unit i integracionim testovima** kako bi se osigurala ispravnost i stabilnost mikroservisa.
+
+- **Unit testovi:** Testiraju pojedinačne klase i metode svakog servisa koristeći **JUnit 5** i **Mockito** za mocking zavisnosti.  
+- **Integracioni testovi:** Testiraju interakciju servisa sa bazom podataka, simulirajući realne scenarije.
+
+### Pokretanje testova:
+
+```bash
+./gradlew test
+
+
 ### Pokretanje sistema:
 
 ```bash
 docker-compose build
 docker-compose up
+
