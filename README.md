@@ -47,6 +47,7 @@ Sistem se sastoji iz sledećih servisa:
   - Poziva Table Management Service za dostupnost
   - Poziva Restaurant Service za detalje restorana
   - Komunicira sa RabbitMQ-om i šalje poruke Notification Service-u
+  - U ovom servisu radi i **Resilience4j (Circuit Breaker + Retry)** za komunikaciju sa table management service-om Service-om.
 - Registruje se na Eureku.
 
 ### **6. Notification Service**
