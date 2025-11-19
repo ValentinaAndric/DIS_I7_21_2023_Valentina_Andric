@@ -99,7 +99,7 @@ Sistem je pokriven **unit i integracionim testovima** kako bi se osigurala ispra
 
 - **Unit testovi:** Testiraju pojedinačne klase i metode svakog servisa koristeći **JUnit 5** i **Mockito** za mocking zavisnosti.  
 - **Integracioni testovi:** Testiraju interakciju servisa sa bazom podataka, simulirajući realne scenarije.
-  
+- Za potrebe testiranja moze se koristiti **Postman** kolekcija koja se nalazi u root-u projekta
 ---
 
 ### Pokretanje sistema:
